@@ -91,6 +91,9 @@ void Print(const IntQueue *q){
     putchar('\n');
 }
 
+int Count(StringsQueue *q , char *x){
+    
+}
 
 int main(void){
     IntQueue  que;
