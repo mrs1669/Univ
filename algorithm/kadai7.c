@@ -14,11 +14,11 @@ typedef struct {/*---キューを実現する構造体---*/
     int num;  /* 現在の要素数*/
     int front;/* 先頭要素カーソル*/
     int rear; /* 末尾要素カーソル*/
-    int *que; /* キュー本体（の先頭要素へのポインタ）*/
-} IntQueue;
+    char *que; /* キュー本体（の先頭要素へのポインタ）*/
+} StringsQueue;
 
 /*---キューの初期化---*/
-int Initialize(IntQueue *q, int max){
+int Initialize(StringsQueue *q, int max){
     q->num = q->front = q->rear = 0;
     if((q->que = calloc(max, sizeof(int))) == NULL){
         q->max = 0;/* 配列の確保に失敗*/
@@ -29,7 +29,7 @@ int Initialize(IntQueue *q, int max){
 }
 
 /*---キューの後始末---*/
-void Terminate(IntQueue *q){
+void Terminate(StringsQueue *q){
     if (q->que != NULL){
         free(q->que);/* 配列を解放*/
         q->max = q->num = q->front = q->rear = 0;
@@ -37,7 +37,7 @@ void Terminate(IntQueue *q){
 }
 
 /*---キューにデータをエンキュー---*/
-int Enque(IntQueue *q, int x){
+int Enque(StringsQueue *q, int x){
     if (q->num >= q->max){
         return -1;/* キューは満杯*/
     }else{
@@ -50,7 +50,7 @@ int Enque(IntQueue *q, int x){
 }
 
 /*---キューからデータをデキュー---*/
-int Deque(IntQueue *q, int *x){
+int Deque(StringsQueue *q, int *x){
     if (q->num <= 0){/* キューは空*/
         return -1;
     }else{
@@ -63,7 +63,7 @@ int Deque(IntQueue *q, int *x){
 }
 
 /*---キューからデータをピーク---*/
-int Peek(const IntQueue *q, int *x){
+int Peek(const StringsQueue *q, int *x){
     if(q->num <= 0){
         return -1;
     }
@@ -72,17 +72,17 @@ int Peek(const IntQueue *q, int *x){
 }
 
 /*---キューの容量---*/
-int Capacity(const IntQueue *q){
+int Capacity(const StringsQueue *q){
     return (q->max);
 }
 
 /*---キューに蓄えられているデータ数---*/
-int Size(const IntQueue *q){
+int Size(const StringsQueue *q){
     return (q->num);
 }
 
 /*---全データの表示---*/
-void Print(const IntQueue *q){
+void Print(const StringsQueue *q){
     int i;
 
     for(i = 0; i < q->num; i++){
@@ -92,11 +92,11 @@ void Print(const IntQueue *q){
 }
 
 int Count(StringsQueue *q , char *x){
-    
+    return 0;
 }
 
 int main(void){
-    IntQueue  que;
+    StringsQueue  que;
     if (Initialize(&que, 5) == -1){
         puts("キューの生成に失敗しました。");
         return 1;
@@ -105,7 +105,7 @@ int main(void){
     while (1){
         int  m, x;
         printf("現在のデータ数：%d/%d\n", Size(&que), Capacity(&que));
-        printf("(1) エンキュー(2) デキュー(3) ピーク(4) 表示(0) 終了：");
+        printf("(1)エンキュー　(2)デキュー　(3)ピーク　(4)表示　(5)パターンの計数　(0)終了：");
         scanf("%d", &m);
         if (m == 0){
             break;
@@ -117,7 +117,6 @@ int main(void){
                 if (Enque(&que, x) == -1){
                     puts("\aエラー:データのエンキューに失敗しました。");
                 }
-                printf("%d", que.que[1]);
                 break;
             
             case 2:
@@ -139,9 +138,16 @@ int main(void){
             case 4:/* 表示*/
                 Print(&que);
                 break;
+
+//            case 5:/* 表示*/
+//                if(Count(StringsQueue *q , char *x)) == 0{
+  //                  puts("\aパターンは存在しません");
+    //            }else{
+      //              printf("見つかったパターンの数は%dです\n", x);
+//        }
+//      break;
         }
     }
-    printf("%d", que.que[1]);
     Terminate(&que);
     return 0;
 }
