@@ -141,9 +141,9 @@ int main(void){
 
 //            case 5:/* 表示*/
 //                if(Count(StringsQueue *q , char *x)) == 0{
-  //                  puts("\aパターンは存在しません");
-    //            }else{
-      //              printf("見つかったパターンの数は%dです\n", x);
+//                  puts("\aパターンは存在しません");
+//            }else{
+//              printf("見つかったパターンの数は%dです\n", x);
 //        }
 //      break;
         }
