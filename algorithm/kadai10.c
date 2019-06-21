@@ -8,9 +8,12 @@
 void recur3(char *st){
     int n = strlen(st);
     if( n > 0 ){
-        recur3( st + 1);
+        recur3( st + 1 );
         printf("%c", *st);
-if (n >1 ) recur3( st + 2 );
-else recur3( st + 1 );
-}
+        if( n > 1 ){
+            recur3( st + 2 );
+        }else{
+        recur3( st + 1 );
+        }
+    }
 }
