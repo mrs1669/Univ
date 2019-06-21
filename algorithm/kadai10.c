@@ -17,3 +17,11 @@ void recur3(char *st){
         }
     }
 }
+
+int main(void){
+    char  x[String_Max];
+    printf("文字列をを入力せよ:"); scanf("%s", x);
+    recur3(x);
+    printf("\n");
+    return (0);
+}
