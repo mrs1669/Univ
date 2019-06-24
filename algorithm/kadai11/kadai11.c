@@ -40,15 +40,18 @@ void bubble(Member *a, int n,int compare(const Member *x, const Member *y),int o
 }
 /*--- 全データの表示 ---*/
 void Print(const Member *data, int n){
- int i;
-  for(i=0; i < n; i++)
- PrintLnMember(data+i);
+    int i;
+    for(i=0; i < n; i++){
+        PrintLnMember(data+i);
+    }
 }
+
 /*--- メニュー ---*/
 typedef enum {
- TERMINATE, ASCEND_NO, ASCEND_NAME,
- DESCEND_NO, DESCEND_NAME, PRINT_ALL
-} Menu;
+    TERMINATE, ASCEND_NO, ASCEND_NAME,
+    DESCEND_NO, DESCEND_NAME, PRINT_ALL
+}Menu;
+
 /*--- メニュー選択 ---*/
 Menu SelectMenu(void){
  int i, ch;
