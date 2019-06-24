@@ -75,6 +75,7 @@ Menu SelectMenu(void){
 
     return (Menu)ch;
 }
+
 /*--- メイン ---*/
 int main(void){
  Menu menu;
