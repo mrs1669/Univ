@@ -78,38 +78,39 @@ Menu SelectMenu(void){
 
 /*--- メイン ---*/
 int main(void){
- Menu menu;
- Member data[] = {
- {5, "watanabe"}, {7, "satoshi"},
- {6, "noyuri"}, {0, "daisuke"},
- {0, "motoko"}, {4, "agemi"},
- {9, "ito"}, {2, "ohta"},
- {1, "takashi"}, {3, "kouji"}
- };
- int ndata = sizeof(data)/sizeof(data[0]);
+    Menu menu;
+    Member data[] = {
+    {5, "watanabe"}, {7, "satoshi"},
+    {6, "noyuri"}, {0, "daisuke"},
+    {0, "motoko"}, {4, "agemi"},
+    {9, "ito"}, {2, "ohta"},
+    {1, "takashi"}, {3, "kouji"}
+    };
+    int ndata = sizeof(data)/sizeof(data[0]);
 
- do {
- int n;
-    printf("%s",data->name);
+    do{
+        int n;
+        printf("%s",data->name);
 
- switch (menu = SelectMenu()) {
- case ASCEND_NO : /* 番号で昇順にソート */
- bubble(data, ndata, MemberNoCmp, ASCENDING);
- break;
- case ASCEND_NAME :/* 名前で昇順にソート */
-  bubble(data, ndata, MemberNameCmp, ASCENDING);
- break;
- case DESCEND_NO : /* 番号で降順にソート */
- bubble(data, ndata, MemberNoCmp, DESCENDING);
- break;
- case DESCEND_NAME :/* 名前で降順にソート */
- bubble(data, ndata, MemberNameCmp, DESCENDING);
- break;
- case PRINT_ALL : /* 全データを表示 */
- Print(data, ndata);
- break;
- }
- } while (menu != TERMINATE);
+        switch (menu = SelectMenu()) {
+            case ASCEND_NO : /* 番号で昇順にソート */
+            bubble(data, ndata, MemberNoCmp, ASCENDING);
+            break;
+            case ASCEND_NAME :/* 名前で昇順にソート */
+            bubble(data, ndata, MemberNameCmp, ASCENDING);
+            break;
+            case DESCEND_NO : /* 番号で降順にソート */
+            bubble(data, ndata, MemberNoCmp, DESCENDING);
+            break;
+            case DESCEND_NAME :/* 名前で降順にソート */
+            bubble(data, ndata, MemberNameCmp, DESCENDING);
+            break;
+            case PRINT_ALL : /* 全データを表示 */
+            Print(data, ndata);
+            break;
+        }
+    }
+    while (menu != TERMINATE);
 
- return 0;
+    return 0;
 }
