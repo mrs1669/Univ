@@ -32,7 +32,7 @@ void bubble(Member *a, int n,int compare(const Member *x, const Member *y),int o
     int i, j;
     for(i = 0; i < n - 1; i++){
         for(j = n-1; j > i; j--){
-            if (compare(a + j – 1 + order, a + j - order) > 0){
+            if (compare(a + j - 1 + order, a + j - order) > 0){
                 swap(Member, a[j-1], a[j]);
             }
         }
@@ -54,24 +54,26 @@ typedef enum {
 
 /*--- メニュー選択 ---*/
 Menu SelectMenu(void){
- int i, ch;
- char *mstring[] = {
- "番号で昇順ソート", "名前で昇順ソート",
- "番号で降順ソート", "名前で降順ソート",
- "データを表示"
- };
+    int i, ch;
+    char *mstring[] = {
+    "番号で昇順ソート", "名前で昇順ソート",
+    "番号で降順ソート", "名前で降順ソート",
+    "データを表示"
+    };
 
- do {
- for (i = TERMINATE; i < PRINT_ALL; i++) {
- printf("(%2d) %-24.24s ", i + 1, mstring[i]);
- if ((i % 3) == 2)
-putchar('\n');
- }
- printf("( 0) 終了 ：");
- scanf("%d", &ch);
- } while (ch < TERMINATE || ch > PRINT_ALL);
+    do{
+    for (i = TERMINATE; i < PRINT_ALL; i++){
+        printf("(%2d) %-24.24s ", i + 1, mstring[i]);
+        if ((i % 3) == 2){
+            putchar('\n');
+        }
+    }
+    printf("( 0) 終了 ：");
+    scanf("%d", &ch);
+    }
+    while(ch < TERMINATE || ch > PRINT_ALL);
 
- return (Menu)ch;
+    return (Menu)ch;
 }
 /*--- メイン ---*/
 int main(void){
@@ -87,6 +89,7 @@ int main(void){
 
  do {
  int n;
+    printf("%s",data->name);
 
  switch (menu = SelectMenu()) {
  case ASCEND_NO : /* 番号で昇順にソート */
@@ -106,5 +109,6 @@ int main(void){
  break;
  }
  } while (menu != TERMINATE);
+
  return 0;
 }
