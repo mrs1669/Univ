@@ -7,9 +7,9 @@
 #define DESCENDING 1 /* 降順 */
 
 /*--- 会員データ ---*/
-typedef struct{
- int no; /* 番号 */
- char name[20]; /* 氏名 */
+typedef struct {
+    int no; /* 番号 */
+    char name[20]; /* 氏名 */
 } Member;
 
 /*--- 会員の番号の比較関数 ---*/
@@ -28,16 +28,34 @@ void PrintLnMember(const Member *x){
 }
 
 /* --- 単純交換ソート --- */
+/*
 void bubble(Member *a, int n,int compare(const Member *x, const Member *y),int order){
     int i, j;
     for(i = 0; i < n - 1; i++){
         for(j = n-1; j > i; j--){
-            if (compare(a + j - 1 + order, a + j - order) > 0){
+            if(compare(a + j - 1 + order, a + j - order) > 0){
                 swap(Member, a[j-1], a[j]);
             }
         }
     }
 }
+*/
+
+/* --- シェルソート --- */
+void shell(Member *a, int n,int compare(const Member *x, const Member *y),int order){
+    int i, j, h;
+
+    for(h = n / 2; h > 0; h /= 2){
+        for(i = h; i < n - 1 + h; i++){
+            for(j = n-1; j > i; j-=h){
+                if(compare(a + j + h - 1 + order, a + j + h - order) > 0){
+                    swap(Member, a[j+h-1], a[j+h]);
+                }
+            }
+        }
+    }
+}
+
 /*--- 全データの表示 ---*/
 void Print(const Member *data, int n){
     int i;
@@ -50,7 +68,7 @@ void Print(const Member *data, int n){
 typedef enum {
     TERMINATE, ASCEND_NO, ASCEND_NAME,
     DESCEND_NO, DESCEND_NAME, PRINT_ALL
-}Menu;
+} Menu;
 
 /*--- メニュー選択 ---*/
 Menu SelectMenu(void){
@@ -61,17 +79,16 @@ Menu SelectMenu(void){
     "データを表示"
     };
 
-    do{
-    for (i = TERMINATE; i < PRINT_ALL; i++){
+    do {
+    for (i = TERMINATE; i < PRINT_ALL; i++) {
         printf("(%2d) %-24.24s ", i + 1, mstring[i]);
-        if ((i % 3) == 2){
+        if((i % 3) == 2){
             putchar('\n');
         }
     }
     printf("( 0) 終了 ：");
     scanf("%d", &ch);
-    }
-    while(ch < TERMINATE || ch > PRINT_ALL);
+    }while (ch < TERMINATE || ch > PRINT_ALL);
 
     return (Menu)ch;
 }
@@ -80,40 +97,34 @@ Menu SelectMenu(void){
 int main(void){
     Menu menu;
     Member data[] = {
-    {5, "watanabe"}, {7, "satoshi"},
-    {6, "noyuri"}, {0, "daisuke"},
-    {0, "motoko"}, {4, "agemi"},
-    {9, "ito"}, {2, "ohta"},
-    {1, "takashi"}, {3, "kouji"}
+        {5, "watanabe"}, {7, "satoshi"},
+        {6, "noyuri"}, {0, "daisuke"},
+        {0, "motoko"}, {4, "agemi"},
+        {9, "ito"}, {2, "ohta"},
+        {1, "takashi"}, {3, "kouji"}
     };
     int ndata = sizeof(data)/sizeof(data[0]);
 
-    do{
-        int n;
-        printf("%s",data->name);
+    do {
+    int n;
 
-        switch (menu = SelectMenu()) {
-            case ASCEND_NO : /* 番号で昇順にソート */
-            bubble(data, ndata, MemberNoCmp, ASCENDING);
-            break;
-            case ASCEND_NAME :/* 名前で昇順にソート */
-            bubble(data, ndata, MemberNameCmp, ASCENDING);
-            break;
-            case DESCEND_NO : /* 番号で降順にソート */
-            bubble(data, ndata, MemberNoCmp, DESCENDING);
-            break;
-            case DESCEND_NAME :/* 名前で降順にソート */
-            bubble(data, ndata, MemberNameCmp, DESCENDING);
-            break;
-            case PRINT_ALL : /* 全データを表示 */
-            Print(data, ndata);
-            break;
-        }
+    switch (menu = SelectMenu()) {
+    case ASCEND_NO : /* 番号で昇順にソート */
+    shell(data, ndata, MemberNoCmp, ASCENDING);
+    break;
+    case ASCEND_NAME :/* 名前で昇順にソート */
+    shell(data, ndata, MemberNameCmp, ASCENDING);
+    break;
+    case DESCEND_NO : /* 番号で降順にソート */
+    shell(data, ndata, MemberNoCmp, DESCENDING);
+    break;
+    case DESCEND_NAME :/* 名前で降順にソート */
+    shell(data, ndata, MemberNameCmp, DESCENDING);
+    break;
+    case PRINT_ALL : /* 全データを表示 */
+    Print(data, ndata);
+    break;
     }
-    while (menu != TERMINATE);
-
+    }while(menu != TERMINATE);
     return 0;
 }
-
-
-//aaaaaaa
