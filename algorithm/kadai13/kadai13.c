@@ -69,3 +69,62 @@ BinNode *Search(BinNode *p, const Member *x){
     else
     return Search(p->right, x); /* 右部分木から探索 */
 }
+
+/*--- ノードを挿入 ---*/
+BinNode *Add(BinNode *p, const Member *x){
+    int cond;
+    if (p == NULL) {
+    p = AllocBinNode();
+    SetBinNode(p, x, NULL, NULL);
+    } else if ((cond = MemberNameCmp(x, &p->data)) == 0)
+    printf("【エラー】%s は既に登録されています。\n", x->name);
+    else if (cond < 0)
+    p->left = Add(p->left, x);
+    else
+    p->right = Add(p->right, x);
+    return p;
+}
+
+/*--- ノードを削除 ---*/
+int Remove(BinNode **root, const Member *x){
+    BinNode *next, *temp;
+    BinNode **left;
+    BinNode **p = root;
+    while (1) {
+    int cond;
+    if (*p == NULL) {
+    printf("【エラー】%s は登録されていません。\n", x->name);
+    return -1; /* そのキーは存在しない */
+    } else if ((cond = MemberNameCmp(x, &(*p)->data)) == 0)
+    break; /* 探索成功 */
+    else if (cond < 0)
+    p = &((*p)->left); /* 左部分木から探索 */
+    else
+    p = &((*p)->right);/* 右部分木から探索 */
+    }
+    if ((*p)->left == NULL)
+    next = (*p)->right;
+    else {
+    left = &((*p)->left);
+    while ((*left)->right != NULL)
+    left = &(*left)->right;
+    next = *left;
+    *left = (*left)->left;
+    next->left = (*p)->left;
+    next->right = (*p)->right;
+    }
+    temp = *p;
+    *p = next;
+    free(temp);
+
+    return 0;
+}
+
+/*--- 全ノードのデータを表示 ---*/
+void PrintTree(const BinNode *p){
+    if (p != NULL) {
+    PrintTree(p->left);
+    PrintLnMember(&p->data);
+    PrintTree(p->right);
+    }
+}
