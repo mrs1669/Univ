@@ -128,3 +128,74 @@ void PrintTree(const BinNode *p){
     PrintTree(p->right);
     }
 }
+
+/*--- 全ノードの削除 ---*/
+void FreeTree(BinNode *p){
+    if (p != NULL) {
+    FreeTree(p->left);
+    FreeTree(p->right);
+    free(p);
+    }
+}
+
+/*--- メニュー ---*/
+typedef enum {
+    TERMINATE, ADD, REMOVE, SEARCH, PRINT_ALL
+} Menu;
+
+/*--- メニュー選択 ---*/
+Menu SelectMenu(void){
+    int i, ch;
+    char *mstring[] = {"挿入", "削除", "探索", "表示"};
+
+    do {
+    for (i = TERMINATE; i < PRINT_ALL; i++) {
+    printf("(%2d) %-18.18s ", i + 1, mstring[i]);
+    if ((i % 3) == 2)
+    putchar('\n');
+    }
+    printf("( 0) 終了 ：");
+    scanf("%d", &ch);
+    } while (ch < TERMINATE || ch > PRINT_ALL);
+
+    return (Menu)ch;
+}
+
+/*--- メイン関数 ---*/
+int main(void){
+    Menu menu;
+    BinNode *root = NULL; /* ２分探索木の根へのポインタ */
+
+    do {
+    Member x;
+    BinNode *temp;
+
+    switch (menu = SelectMenu()) {
+    /*--- ノードの挿入 ---*/
+    case ADD :
+    x = ScanMember("挿入", MEMBER_NO | MEMBER_NAME);
+    root = Add(root, &x);
+    break;
+    /*--- ノードの削除 ---*/
+    case REMOVE :
+    x = ScanMember("削除", MEMBER_NAME);
+    Remove(&root, &x);
+    break;
+    /*--- ノードの探索 ---*/
+    case SEARCH :
+    x = ScanMember("探索", MEMBER_NAME);
+    if ((temp = Search(root, &x)) != NULL)
+    PrintLnMember(&temp->data);
+    break;
+    /*--- 全ノードの表示 ---*/
+    case PRINT_ALL :
+    puts("【一覧表】");
+    PrintTree(root);
+    break;
+    }
+    } while (menu != TERMINATE);
+
+    FreeTree(root);
+
+    return 0;
+}
