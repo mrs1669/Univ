@@ -2,8 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MEMBER_NO 1 /* 番号を表す定数値 */
-#define MEMBER_NAME 2 /* 氏名を表す定数値 */
+
+// #define MEMBER_NO 1 /* 番号を表す定数値 */
+// #define MEMBER_NAME 2 /* 氏名を表す定数値 */
+
+
+// (イ) プログラム中の MEMBER_NO，MEMBER_NAME の代わりに，以下のものを用いてください．
+
+#define PHYSCHECK_NAME 1 /* 氏名を表す定数値 */
+#define PHYSCHECK_VISION 2 /* 視力を表す定数値 */
+#define PHYSCHECK_HEIGHT 4 /* 身長を表す定数値 */
+
 
 
 // /*--- 会員データ ---*/
