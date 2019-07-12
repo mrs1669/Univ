@@ -67,5 +67,5 @@ BinNode *Search(BinNode *p, const Member *x){
     else if (cond < 0)
     return Search(p->left, x); /* 左部分木から探索 */
     else
- return Search(p->right, x); /* 右部分木から探索 */
+    return Search(p->right, x); /* 右部分木から探索 */
 }
