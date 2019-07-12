@@ -5,15 +5,39 @@
 #define MEMBER_NO 1 /* 番号を表す定数値 */
 #define MEMBER_NAME 2 /* 氏名を表す定数値 */
 
-/*--- 会員データ ---*/
-typedef struct{
-    int no; /* 番号 */
-    char name[20]; /* 氏名 */
-} Member;
 
+// /*--- 会員データ ---*/
+// typedef struct{
+//     int no; /* 番号 */
+//     char name[20]; /* 氏名 */
+// } Member;
+
+// /*--- ノード ---*/
+// typedef struct __bnode{
+//     Member data; /* データ */
+//     struct __bnode *left; /* 左子ノードへのポインタ */
+//     struct __bnode *right;/* 右子ノードへのポインタ */
+// } BinNode;
+
+
+// (ア) __bnode の data の型を，以下の PhysCheck のように，氏名の文字列(name)は動的な文字列配列で実現するようにしてください．
+
+/*--- 身体データ型 ---*/
+typedef struct{
+    double vision; /* 視力 */
+    int height; /* 身長 */
+}Body ;
+
+/*--- 身体検査データ型 ---*/
+typedef struct{
+    char *name; /* 氏名 */
+    Body body; /* 身体データ型 ---*/
+} PhysCheck ;
+
+// PhysCheck用のノード
 /*--- ノード ---*/
-typedef struct __bnode{
-    Member data; /* データ */
+typedef struct __bnode {
+    PhysCheck data; /* データ */
     struct __bnode *left; /* 左子ノードへのポインタ */
     struct __bnode *right;/* 右子ノードへのポインタ */
 } BinNode;
