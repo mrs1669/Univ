@@ -13,7 +13,8 @@
 #define PHYSCHECK_VISION 2 /* 視力を表す定数値 */
 #define PHYSCHECK_HEIGHT 4 /* 身長を表す定数値 */
 
-
+// (エ) ノードを挿入する場合に，キーボードから読み込むデータは三種類（氏名，身長，視力）としてください．ただし，氏名として利用できる文字は 80 文字以内の英文字のみとし，空白や日本語などは利用しないものとします．
+#define String_Max 81
 
 // /*--- 会員データ ---*/
 // typedef struct{
@@ -51,28 +52,70 @@ typedef struct __bnode {
     struct __bnode *right;/* 右子ノードへのポインタ */
 } BinNode;
 
-/*--- 会員の番号の比較関数 ---*/
-int MemberNoCmp(const Member *x, const Member *y){
-    return x->no < y->no ? -1 : x->no > y->no ? 1 : 0;
+
+// /*--- 会員の番号の比較関数 ---*/
+// int MemberNoCmp(const Member *x, const Member *y){
+//     return x->no < y->no ? -1 : x->no > y->no ? 1 : 0;
+// }
+
+// /*--- 会員の氏名の比較関数 ---*/
+// int MemberNameCmp(const Member *x, const Member *y){
+//     return strcmp(x->name, y->name);
+// }
+
+
+/*--- 身長の比較関数 ---*/
+int PhysCheckHeightCmp(const PhysCheck *x, const PhysCheck *y){
+    return x->body.height < y->body.height ? -1 : x->body.height > y->body.height ? 1 : 0;
 }
 
-/*--- 会員の氏名の比較関数 ---*/
-int MemberNameCmp(const Member *x, const Member *y){
+/*--- 視力の比較関数 ---*/
+int PhysCheckVisionCmp(const PhysCheck *x, const PhysCheck *y){
+    return x->body.vision < y->body.vision ? -1 : x->body.vision > y->body.vision ? 1 : 0;
+}
+
+/*--- 氏名の探索関数 ---*/
+int PhysCheckNameCmp(const PhysCheck *x, const PhysCheck *y){
     return strcmp(x->name, y->name);
 }
 
-/*--- 会員データ（番号と氏名）の表示（改行あり）---*/
-void PrintLnMember(const Member *x){
-    printf("%d %s\n", x->no, x->name);
+
+// /*--- 会員データ（番号と氏名）の表示（改行あり）---*/
+// void PrintLnMember(const Member *x){
+//     printf("%d %s\n", x->no, x->name);
+// }
+
+
+// (オ) 表示するデータも三種類（氏名，身長，視力の順で表示）とするようにしてください
+
+/*--- 身体検査データ（氏名と身長と視力）の表示（改行あり）---*/
+void PrintLnPhysCheck(const PhysCheck *x){
+    printf("氏名:%-18.18s 身長:%4d 視力:%5.1f\n", x->name, x->body.height, x->body.vision);
 }
 
-/*--- 会員データ（番号と氏名）の読込み ---*/
-Member ScanMember(const char *message, int sw){
-    Member temp;
-    printf("%s するデータを入力してください。\n", message);
 
-    if (sw & MEMBER_NO) { printf("番号："); scanf("%d", &temp.no); }
-    if (sw & MEMBER_NAME) { printf("氏名："); scanf("%s", temp.name); }
+// /*--- 会員データ（番号と氏名）の読込み ---*/
+// Member ScanMember(const char *message, int sw){
+//     Member temp;
+//     printf("%s するデータを入力してください。\n", message);
+// 
+//     if (sw & MEMBER_NO) { printf("番号："); scanf("%d", &temp.no); }
+//     if (sw & MEMBER_NAME) { printf("氏名："); scanf("%s", temp.name); }
+// 
+//     return temp;
+// }
+
+
+/*--- 身体検査データ（氏名と身長と視力）の読込み ---*/
+PhysCheck ScanPhysCheck(const char *message, int sw){
+    char name[String_Max];
+    PhysCheck temp;
+    printf("%s するデータを入力してください。\n", message);
+    if (sw & PHYSCHECK_NAME){printf("氏名："); scanf("%s", name);}
+    if (sw & PHYSCHECK_HEIGHT){printf("身長："); scanf("%d", &temp.body.height);}
+    if (sw & PHYSCHECK_VISION){printf("視力："); scanf("%lf", &temp.body.vision);}
+    if ((temp.name = calloc(strlen(name)+1, sizeof(char))) == NULL) exit ;
+    strcpy(temp.name, name);
 
     return temp;
 }
@@ -82,26 +125,53 @@ static BinNode *AllocBinNode(void){
     return calloc(1, sizeof(BinNode));
 }
 
+
+// *--- ノードの各メンバに値を設定 ----*/
+// static void SetBinNode(BinNode *n, const Member *x,
+//     const BinNode *left, const BinNode *right){
+//     n->data = *x; /* データ */
+//     n->left = (BinNode *)left; /* 左子ノードへのポインタ */
+//     n->right = (BinNode *)right;/* 右子ノードへのポインタ */
+// }
+
+
 /*--- ノードの各メンバに値を設定 ----*/
-static void SetBinNode(BinNode *n, const Member *x,
+static void SetBinNode(BinNode *n, const PhysCheck *x,
     const BinNode *left, const BinNode *right){
     n->data = *x; /* データ */
     n->left = (BinNode *)left; /* 左子ノードへのポインタ */
     n->right = (BinNode *)right;/* 右子ノードへのポインタ */
 }
 
+
+// /*--- 探索 ---*/
+// BinNode *Search(BinNode *p, const Member *x){
+//     int cond;
+//     if (p == NULL)
+//     return NULL; /* 探索失敗 */
+//     else if ((cond = MemberNameCmp(x, &p->data)) == 0)
+//     return p; /* 探索成功 */
+//     else if (cond < 0)
+//     return Search(p->left, x); /* 左部分木から探索 */
+//     else
+//     return Search(p->right, x); /* 右部分木から探索 */
+// }
+
+
 /*--- 探索 ---*/
-BinNode *Search(BinNode *p, const Member *x){
+BinNode *Search(BinNode *p, const PhysCheck *x,
+int compare(const PhysCheck *y, const PhysCheck *z)){
     int cond;
     if (p == NULL)
-    return NULL; /* 探索失敗 */
-    else if ((cond = MemberNameCmp(x, &p->data)) == 0)
+    return NULL;/* 探索失敗 */
+    else if ((cond = compare(x, &p->data)) == 0)
     return p; /* 探索成功 */
     else if (cond < 0)
-    return Search(p->left, x); /* 左部分木から探索 */
+    return Search(p->left, x, compare);/* 左部分木から探索 */
     else
-    return Search(p->right, x); /* 右部分木から探索 */
+    return Search(p->right, x, compare);/* 右部分木から探索 */
 }
+
 
 /*--- ノードを挿入 ---*/
 BinNode *Add(BinNode *p, const Member *x){
