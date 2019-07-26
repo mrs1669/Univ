@@ -1,11 +1,13 @@
 /* 構造体に対するヒープソートの実現例 */ #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define swap(type, x, y) do {type t; t = x; x = y; y = t;} while(0)
 
-/*--- 会員データ ---*/ typedef struct {
-int no; /* 番号 */
-char name[20]; /* 氏名 */
+/*--- 会員データ ---*/ 
+typedef struct {
+    int no; /* 番号 */
+    char name[20]; /* 氏名 */
 } Member;
 
 /*--- 会員の番号の昇順比較関数 ---*/
@@ -28,15 +30,17 @@ int DescendingMemberNameCmp(const Member *x, const Member *y){
     return strcmp(y->name, x->name);
 }
 
-/*--- 会員データ(番号と氏名)の表示(改行あり)---*/ void PrintLnMember(const Member *x){
+/*--- 会員データ(番号と氏名)の表示(改行あり)---*/ 
+void PrintLnMember(const Member *x){
     printf("%d %s\n", x->no, x->name);
 }
 
 /*--- 全データの表示 ---*/
 void Print(const Member *data, int n){
-int i;
-    for(i=0; i < n; i++)
-    PrintLnMember(data+i);
+    int i;
+    for(i=0; i < n; i++){
+        PrintLnMember(data+i);
+    }
 }
 
 /*--- a[left]~a[right]をヒープ化 ---*/
