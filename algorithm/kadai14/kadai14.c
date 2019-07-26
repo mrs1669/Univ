@@ -56,14 +56,16 @@ child = (cr <= right && compare(a + cr, a + cl) >0 ) ? cr : cl; /* 昇順なら�
 }
 
 /*--- ヒープソート ---*/
-void heapsort(Member *a, int n, int compare(const Member *y, const Member *z)){
-int i;
-for (i = (n - 1) / 2; i >= 0; i--)
-updownheap(a, i, n - 1, compare);
-    for (i = n - 1; i > 0; i--) {
-    swap(Member , a[0], a[i]);
-    updownheap(a, 0, i - 1, compare);
-} 
+// MacOS内の"stdlib"のヘッダーファイルに"heapsort"関数があるので、本課題の"heapsort"関数を"heapSort"と変更します。
+void heapSort(Member *a, int n, int compare(const Member *y, const Member *z)){
+    int i;
+    for (i = (n - 1) / 2; i >= 0; i--){
+        updownheap(a, i, n - 1, compare);
+    }
+    for (i = n - 1; i > 0; i--){
+        swap(Member , a[0], a[i]);
+        updownheap(a, 0, i - 1, compare);
+    } 
 }
 
 /*--- メニュー ---*/ 
@@ -100,16 +102,16 @@ int main(void){
     do{
         switch (menu = SelectMenu()) {
             case ASCEND_NO : /* 番号で昇順にソート */
-                heapsort(data, sortindex, ndata, AscendingMemberNoCmp);
+                heapSort(data, sortindex, ndata, AscendingMemberNoCmp);
                 break;
             case ASCEND_NAME :/* 名前で昇順にソート */
-                heapsort(data, sortindex, ndata, AscendingMemberNameCmp);
+                heapSort(data, sortindex, ndata, AscendingMemberNameCmp);
                 break;
             case DESCEND_NO : /* 番号で降順にソート */
-                heapsort(data, sortindex, ndata, DescendingMemberNoCmp);
+                heapSort(data, sortindex, ndata, DescendingMemberNoCmp);
                 break;
             case DESCEND_NAME :/* 名前で降順にソート */
-                heapsort(data, sortindex, ndata, DescendingMemberNameCmp);
+                heapSort(data, sortindex, ndata, DescendingMemberNameCmp);
                 break;
             case PRINT_ALL : /* 全データを表示 */
                 Print(data, sortindex, ndata);
