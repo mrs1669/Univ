@@ -49,8 +49,8 @@ static void updownheap(Member *a, int *x, int left, int right, int compare(const
     int child;
     int parent;
     for (parent = left; parent < (right + 1)/2; parent = child) {
-        int cl ;
-        int cr ;
+        int cl = parent * 2 + 1; /* 左の子 */
+        int cr = cl + 1; /* 右の子 */
         child = (cr <= right && compare(a + x[cr], a + x[cl]) >0 ) ? cr : cl; /* 昇順なら大きい方，降順なら小さい方 */
         if (compare (a + temp, a + x[child]) >= 0){
             break;
