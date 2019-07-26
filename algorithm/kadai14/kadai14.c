@@ -44,20 +44,20 @@ void Print(const Member *data, int *x, int n){
 }
 
 /*--- a[left]~a[right]をヒープ化 ---*/
-static void updownheap(Member *a, int *x, int left, int right,int compare(const Member *y, const Member *z)){
-    Member temp = a[left]; /* 根 */ 
+static void updownheap(Member *a, int *x, int left, int right, int compare(const Member *y, const Member *z)){
+    int temp = x[left]; /* 根 */ 
     int child;
     int parent;
     for (parent = left; parent < (right + 1)/2; parent = child) {
-        int cl = parent * 2 + 1; /* 左の子 */
-        int cr = cl + 1; /* 右の子 */
-        child = (cr <= right && compare(a + cr, a + cl) >0 ) ? cr : cl; /* 昇順なら大きい方，降順なら小さい方 */
-        if (compare (&temp, a + child) >= 0){
+        int cl ;
+        int cr ;
+        child = (cr <= right && compare(a + x[cr], a + x[cl]) >0 ) ? cr : cl; /* 昇順なら大きい方，降順なら小さい方 */
+        if (compare (a + temp, a + x[child]) >= 0){
             break;
         }
-        a[parent] = a[child];
+        x[parent] = x[child];
     }
-    a[parent] = temp;
+    x[parent] = temp;
 }
 
 /*--- ヒープソート ---*/
