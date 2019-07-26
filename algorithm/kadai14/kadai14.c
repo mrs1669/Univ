@@ -66,21 +66,24 @@ updownheap(a, i, n - 1, compare);
 } 
 }
 
-/*--- メニュー ---*/ typedef enum {
+/*--- メニュー ---*/ 
+typedef enum {
     TERMINATE, ASCEND_NO, ASCEND_NAME, DESCEND_NO, DESCEND_NAME, PRINT_ALL
 } Menu;
 
-/*--- メニュー選択 ---*/ Menu SelectMenu(void){
+/*--- メニュー選択 ---*/ 
+Menu SelectMenu(void){
     int  i, ch;
     char *mstring[] = {"番号で昇順ソート", "名前で昇順ソート", "番号で降順ソート", "名前で降順ソート", "データを表示"};
-    do {
-    for (i = TERMINATE; i < PRINT_ALL; i++) {
-    printf("(%2d) %-22.22s  ", i + 1, mstring[i]);
-    if ((i % 3) == 2)
-        putchar('\n');
-    }
-printf("( 0) 終了 :");
-    scanf("%d", &ch);
+    do{
+        for (i = TERMINATE; i < PRINT_ALL; i++) {
+            printf("(%2d) %-22.22s  ", i + 1, mstring[i]);
+            if ((i % 3) == 2){
+            putchar('\n');
+            }
+        }
+        printf("( 0) 終了 :");
+        scanf("%d", &ch);
     } while (ch < TERMINATE || ch > PRINT_ALL);
     return (Menu)ch;
 }
@@ -114,5 +117,6 @@ int main(void){
         }
     }
     while(menu != TERMINATE);
+
     return 0;
 }
