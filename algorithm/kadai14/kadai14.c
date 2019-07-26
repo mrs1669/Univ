@@ -72,9 +72,7 @@ updownheap(a, i, n - 1, compare);
 
 /*--- メニュー選択 ---*/ Menu SelectMenu(void){
     int  i, ch;
-  char *mstring[] = {
-"番号で昇順ソート", "名前で昇順ソート", "番号で降順ソート", "名前で降順ソート", "データを表示"
-};
+    char *mstring[] = {"番号で昇順ソート", "名前で昇順ソート", "番号で降順ソート", "名前で降順ソート", "データを表示"};
     do {
     for (i = TERMINATE; i < PRINT_ALL; i++) {
     printf("(%2d) %-22.22s  ", i + 1, mstring[i]);
@@ -87,28 +85,34 @@ printf("( 0) 終了 :");
     return (Menu)ch;
 }
 
-/*--- メイン ---*/ int main(void){
-Menu menu;
-Member data[] = {{5, "watanabe"}, {7, "satoshi"}, {6, "noyuri"}, {0, "daisuke"}, {0, "motoko"}, {4, "agemi"}, {9, "ito"}, {2, "ohta"}, {1, "takashi"}, {3, "kouji"}};
+/*--- メイン ---*/
+int main(void){
+    Menu menu;
+    Member data[] = {{5, "watanabe"}, {7, "satoshi"}, {6, "noyuri"}, {0, "daisuke"}, {0, "motoko"},{4, "agemi"}, {9, "ito"}, {2, "ohta"}, {1, "takashi"}, {3, "kouji"}};
     int ndata = sizeof(data)/sizeof(data[0]);
-do {
-switch (menu = SelectMenu()) {
-case ASCEND_NO : /* 番号で昇順にソート */
-    heapsort(data, ndata, AscendingMemberNoCmp);
-break;
-case ASCEND_NAME :/* 名前で昇順にソート */
-    heapsort(data, ndata, AscendingMemberNameCmp);
-break;
-case DESCEND_NO : /* 番号で降順にソート */
-    heapsort(data, ndata, DescendingMemberNoCmp);
-break;
-case DESCEND_NAME :/* 名前で降順にソート */
-    heapsort(data, ndata, DescendingMemberNameCmp);
-break;
-case PRINT_ALL : /* 全データを表示 */
-    Print(data, ndata);
-        break; 
+    int i, *sortindex = calloc(ndata, sizeof(int));
+    for(i = 0; i < ndata; i++){
+        sortindex[i] = i; /* data[]の添字を管理する配列*/
+    }
+    do{
+        switch (menu = SelectMenu()) {
+            case ASCEND_NO : /* 番号で昇順にソート */
+                heapsort(data, sortindex, ndata, AscendingMemberNoCmp);
+                break;
+            case ASCEND_NAME :/* 名前で昇順にソート */
+                heapsort(data, sortindex, ndata, AscendingMemberNameCmp);
+                break;
+            case DESCEND_NO : /* 番号で降順にソート */
+                heapsort(data, sortindex, ndata, DescendingMemberNoCmp);
+                break;
+            case DESCEND_NAME :/* 名前で降順にソート */
+                heapsort(data, sortindex, ndata, DescendingMemberNameCmp);
+                break;
+            case PRINT_ALL : /* 全データを表示 */
+                Print(data, sortindex, ndata);
+                break;
         }
-    } while (menu != TERMINATE);
-return 0; 
+    }
+    while(menu != TERMINATE);
+    return 0;
 }
