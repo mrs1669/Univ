@@ -36,39 +36,40 @@ void PrintLnMember(const Member *x){
 }
 
 /*--- 全データの表示 ---*/
-void Print(const Member *data, int n){
+void Print(const Member *data, int *x, int n){
     int i;
     for(i=0; i < n; i++){
-        PrintLnMember(data+i);
+        PrintLnMember(data+x[i]);
     }
 }
 
 /*--- a[left]~a[right]をヒープ化 ---*/
-static void updownheap(Member *a, int left, int right,
-    int compare(const Member *y, const Member *z)){
-Member temp = a[left]; /* 根 */ int child;
-int parent;
-for (parent = left; parent < (right + 1)/2; parent = child) {
-int cl = parent * 2 + 1; /* 左の子 */
-int cr = cl + 1; /* 右の子 */
-child = (cr <= right && compare(a + cr, a + cl) >0 ) ? cr : cl; /* 昇順なら大きい方，降順なら小さい方 */
-    if (compare (&temp, a + child) >= 0)
-    break;
-    a[parent] = a[child];
+static void updownheap(Member *a, int *x, int left, int right,int compare(const Member *y, const Member *z)){
+    Member temp = a[left]; /* 根 */ 
+    int child;
+    int parent;
+    for (parent = left; parent < (right + 1)/2; parent = child) {
+        int cl = parent * 2 + 1; /* 左の子 */
+        int cr = cl + 1; /* 右の子 */
+        child = (cr <= right && compare(a + cr, a + cl) >0 ) ? cr : cl; /* 昇順なら大きい方，降順なら小さい方 */
+        if (compare (&temp, a + child) >= 0){
+            break;
+        }
+        a[parent] = a[child];
     }
     a[parent] = temp;
 }
 
 /*--- ヒープソート ---*/
 // MacOS内の"stdlib"のヘッダーファイルに"heapsort"関数があるので、本課題の"heapsort"関数を"heapSort"と変更します。
-void heapSort(Member *a, int n, int compare(const Member *y, const Member *z)){
+void heapSort(Member *a, int *x, int n, int compare(const Member *y, const Member *z)){
     int i;
     for (i = (n - 1) / 2; i >= 0; i--){
-        updownheap(a, i, n - 1, compare);
+        updownheap(a, x, i, n - 1, compare);
     }
     for (i = n - 1; i > 0; i--){
         swap(Member , a[0], a[i]);
-        updownheap(a, 0, i - 1, compare);
+        updownheap(a, x, 0, i - 1, compare);
     } 
 }
 
@@ -105,6 +106,8 @@ int main(void){
     }
     do{
         switch (menu = SelectMenu()) {
+            case TERMINATE :
+                return 0;
             case ASCEND_NO : /* 番号で昇順にソート */
                 heapSort(data, sortindex, ndata, AscendingMemberNoCmp);
                 break;
