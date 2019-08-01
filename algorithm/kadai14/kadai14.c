@@ -1,8 +1,11 @@
-/* 構造体に対するヒープソートの実現例 */ #include <stdio.h>
+/* 構造体に対するヒープソートの実現例 */ 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define swap(type, x, y) do {type t; t = x; x = y; y = t;} while(0)
+
+// MacOS内の"stdlib"のヘッダーファイルに"heapsort"関数があるので、本課題の"heapsort"関数を"heapSort"と変更します。
 
 /*--- 会員データ ---*/ 
 typedef struct {
@@ -49,8 +52,10 @@ static void updownheap(Member *a, int *x, int left, int right, int compare(const
     int child;
     int parent;
     for (parent = left; parent < (right + 1)/2; parent = child) {
-        int cl = parent * 2 + 1; /* 左の子 */
-        int cr = cl + 1; /* 右の子 */
+        int cl;
+        int cr;
+        cl = parent * 2 + 1; /* 左の子 */
+        cr = cl + 1; /* 右の子 */
         child = (cr <= right && compare(a + x[cr], a + x[cl]) >0 ) ? cr : cl; /* 昇順なら大きい方，降順なら小さい方 */
         if (compare (a + temp, a + x[child]) >= 0){
             break;
@@ -122,6 +127,8 @@ int main(void){
                 break;
             case PRINT_ALL : /* 全データを表示 */
                 Print(data, sortindex, ndata);
+                break;
+            default:
                 break;
         }
     }
